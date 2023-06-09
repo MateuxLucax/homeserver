@@ -1,0 +1,7 @@
+---
+- name: Configure Time Machine
+  hosts: all
+  become: true
+
+  roles:
+    - role: time_machine

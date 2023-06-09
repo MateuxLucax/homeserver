@@ -1,0 +1,45 @@
+---
+- name: Update packages
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
+
+- name: Install essential packages
+  package:
+    name: "{{ packages }}"
+    state: latest
+
+- name: Run PowerTop auto tune
+  shell: powertop --auto-tune
+
+- name: Create Powertop systemd service
+  become: true
+  copy:
+    content: |
+      [Unit]
+      Description=PowerTOP auto tune
+
+      [Service]
+      Type=oneshot
+      Environment="TERM=dumb"
+      RemainAfterExit=true
+      ExecStart=/usr/sbin/powertop --auto-tune
+
+      [Install]
+      WantedBy=multi-user.target
+    dest: /etc/systemd/system/powertop.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Reload systemd daemon
+  become: true
+  systemd:
+    daemon_reload: yes
+
+- name: Enable Powertop service
+  become: true
+  systemd:
+    name: powertop
+    enabled: yes

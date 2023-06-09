@@ -1,0 +1,35 @@
+---
+- name: Install UFW
+  package:
+    name: ufw
+    state: present
+  become: true
+
+- name: Reset all UFW rules
+  command: ufw --force reset
+  become: true
+  when: ufw_reset_rules
+
+- name: Set UFW default policies
+  ufw:
+    direction: "{{ item.direction }}"
+    policy: "{{ item.policy }}"
+  loop:
+    - { direction: 'incoming', policy: 'deny' }
+    - { direction: 'outgoing', policy: 'allow' }
+    - { direction: 'routed', policy: 'deny' }
+  become: true
+
+- name: Allow specified UFW rules
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  loop: "{{ ufw_allowed_ports }}"
+  become: true
+  notify: Restart UFW   
+
+- name: Enable UFW
+  ufw:
+    state: enabled
+  become: true

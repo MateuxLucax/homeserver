@@ -1,0 +1,9 @@
+---
+- name: Run essential task
+  hosts: all
+  become: true
+
+  roles:
+    - role: system
+
+    - role: geerlingguy.docker

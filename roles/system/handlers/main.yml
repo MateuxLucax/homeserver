@@ -1,0 +1,10 @@
+---
+- name: Restart SSH daemon
+  service:
+    name: sshd
+    state: restarted
+
+- name: Restart UFW
+  service:
+    name: ufw
+    state: restarted

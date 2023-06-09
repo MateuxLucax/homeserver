@@ -1,0 +1,24 @@
+---
+- name: Install Time Machine tools
+  apt:
+    name:
+      - netatalk
+      - avahi-daemon
+    state: present
+
+- name: Create Time Machine directory
+  file:
+    path: "{{ time_machine_dir }}"
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: '0777'
+
+- name: Configure netatalk for Time Machine
+  blockinfile:
+    path: /etc/netatalk/afp.conf
+    block: |
+      [Time Machine]
+      path = {{ time_machine_dir }}
+      time machine = yes
+  notify: Restart netatalk service

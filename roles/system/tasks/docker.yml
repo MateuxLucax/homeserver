@@ -1,0 +1,8 @@
+---
+- name: Create Docker networks
+  docker_network:
+    name: "{{ item.name }}"
+    driver: "{{ item.driver | default('bridge') }}"
+    ipam_config: "{{ item.subnet | default([]) }}"
+  become: true
+  loop: "{{ docker_networks }}"

@@ -1,0 +1,3 @@
+---
+btrfs_device: /dev/sdb
+time_machine_dir: /srv/timemachine

@@ -1,0 +1,40 @@
+---
+username: user
+
+packages:
+  - vim
+  - neovim
+  - htop
+  - fish
+  - neofetch
+  - powertop
+  - lm-sensors
+  - rsync
+  - netatalk
+  - avahi-daemon
+
+shell: /usr/bin/fish
+
+ssh_port: 22
+
+password: changeme
+
+media_dir: "/home/{{ username }}/media"
+
+security_autoupdate_reboot: "false"
+security_autoupdate_reboot_time: "03:00"
+security_autoupdate_mail_to: ""
+security_autoupdate_mail_on_error: true
+security_autoupdate_enabled: true
+security_autoupdate_blacklist: []
+
+ufw_reset_rules: false
+ufw_allowed_ports:
+  - "22"
+  - "80"
+  - "443"
+
+docker_networks:
+  - name: services
+    subnet: 172.30.0.0/16
+    driver: bridge
